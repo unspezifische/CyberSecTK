@@ -1,0 +1,4 @@
+# BEGIN: /Users/ianjohnson/CyberSecTK/.gitignore
+env/
+*.egg-info/
+# END: /Users/ianjohnson/CyberSecTK/.gitignore

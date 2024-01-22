@@ -25,7 +25,7 @@ setup(name='cybersectk',
         ],
     classifiers=[
         'Development Status :: 4 - Beta',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     python_requires='>=3.11',

@@ -1,6 +1,24 @@
 # cybersectk
 
 This is a fork of [cybersectk](https://github.com/sumendrabsingh/CyberSecTK-Library) by SumendraBSingh, a Python library for Machine Learning CyberSec feature extraction.
+
+###################### Installation Instructions #########################
+
+This library is available through PyPi and can be installed using the following command:
+
+<i> pip install cybersectk </i>
+
+This will install all the necessary dependencies before installing the package itself.
+
+If you are interested in developing for this library yourself, clone the repo, then run the following commands:
+
+<i>cd CyberSecTK
+python -m venv env
+source env/bin/activate
+pip install -e .</i>
+
+This will move you into the freshly cloned repo, create a virtual environment so any changes you make won't affect the rest of your Python installation, actiavte that virutal environment, then install the CyberSecTK package in "editable" mode.
+
  
  ################### WLAN IOT ########################
 
@@ -150,24 +168,3 @@ https://drive.google.com/drive/folders/1_mJUvA99cHsE09UxFb1Cpyik3fVaSy0N?usp=sha
 |dll_31bf3856ad364e35_6 |	Microsoft windows operating system, crypto API32.DLL file.|
 |driverclass_31bf3856ad364e35_6 |	Windows security update installation problem.|
 |msil_system	| Security update for .NET framework service.|
-
-
-###################### Helpful Tips #########################
-
-Download the library, unzip it and run the following command before you install. 
-
-
-Navigate to CyberSecTK-Library-master>cybersectk
-
-Execute the following command before installation to make sure you have all the required packages are installed on your current python distribution.
-
- <i> python setup.py develop </i>
- 
- If you found some error make sure to install the missing packages. 
- 
- Installing the library
-
- <i> python setup.py install </i>
- 
-
-

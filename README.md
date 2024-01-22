@@ -1,5 +1,6 @@
-# CyberSecTK-Library
- Cyber Security feature extraction python library 
+# cybersectk
+
+This is a fork of [cybersectk](https://github.com/sumendrabsingh/CyberSecTK-Library) by SumendraBSingh, a Python library for Machine Learning CyberSec feature extraction.
  
  ################### WLAN IOT ########################
 

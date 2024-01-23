@@ -7,7 +7,7 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
- 
+
 setup(name='cybersectk',
     version='1.0',
     url='https://github.com/unspezifische/CyberSecTK',
@@ -20,7 +20,7 @@ setup(name='cybersectk',
     packages=find_packages(),
     install_requires=[
         'scapy',
-        'pandas',
+        'numpy',
         'scikit-learn',
         ],
     classifiers=[

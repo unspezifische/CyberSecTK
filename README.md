@@ -2,169 +2,121 @@
 
 This is a fork of [cybersectk](https://github.com/sumendrabsingh/CyberSecTK-Library) by SumendraBSingh, a Python library for Machine Learning CyberSec feature extraction.
 
-###################### Installation Instructions #########################
+## Installation Instructions
 
 This library is available through PyPi and can be installed using the following command:
 
-<i> pip install cybersectk </i>
+```sh
+pip install cybersectk
+```
 
 This will install all the necessary dependencies before installing the package itself.
 
 If you are interested in developing for this library yourself, clone the repo, then run the following commands:
 
-<i>cd CyberSecTK
+```sh
+cd CyberSecTK
 python -m venv env
 source env/bin/activate
-pip install -e .</i>
+pip install -e .
+```
 
 This will move you into the freshly cloned repo, create a virtual environment so any changes you make won't affect the rest of your Python installation, actiavte that virutal environment, then install the CyberSecTK package in "editable" mode.
 
+## Modules
  
- ################### WLAN IOT ########################
-
- Library Module name : wiot()
+### WLAN IOT
+The `wiot` module extracts features from wireless DataLink layer header information
  
- Example:
- 
+```python
  from cybersectk.wiot import wiot
- 
  wiot()
+```
+
+This module outputs a CSV file named `IOTwireless.csv`. 
  
- OUTPUT File: IOTwireless.CSV
+NOTE: Ensure the file is in the same directory as the script, and don't forget specify the `.pcap` extension at the end of the file name.
+
+### TCP IOT
+The `iot` module extracts features from TCP/IP packets.
+
+```python
+from cybersectk.iot import iot
+iot('path_to_your_pcap_file.pcap', **ip_filter)
+ ```
  
-NOTE: Add the wireless PCAP file in working directory. Enter the PCAP file name when prompt during the exection time. Don't forget to specify the .pcap extension at the end of the file name.
+This module outputs a DataFrame with the extracted features, and saves a copy of each PCAP file with the filter applied into a directory called `filtered_pcap`.
 
-**Wireless IOT Features**
-> Feature selection is based on wireless DataLink layer header information.
+#### Iterating Through a Directory of PCAPs
+We can use Python's built-in `os` library to iterate through a directory containing PCAP files and pass each file to the `iot()` function, using the `ip_filter` dictionary provided by CyberSecTK:
+```py
+import os
+from cybersectk.iot import iot
 
-|Features	| Description|
-|---|---|
-|Version |	Radiotap Frame control field indicates the current WLAN protocol version.|
-|Pad |	Radiotap Frame control field aligns onto natural word boundaries, that means all 8, 16, 32, and 64-bit fields must begin respectively to avoid unaligned accesses to radiotap capture fields.|
-|Len |	Specifies entire length of radiotap data including radiotap header.|
-|Rate |	Data transfer rate of a device i.e. 2.0 Mb/s etc.| 
-|ChannelFrequency |	Device operating channel frequency i.e. radio wave spectrum type a,b,g,n |
-|ChannelFlags |	Specifies device supported spectrum coding method designed to avoid collision.|
-|DBM_AntSignal |	Transmitting wireless device radio antenna strength in dBm.|
-|Antenna |	Number of available transceiving radio antennas.|
-|Subtype |	Specified the frame sub type i.e. association request (0000), association response (0001), beacon (1000), probe request (0100) etc.|
-|Type |	Determine the function of frame type i.e. management (00), control (01) or data (10).|  
-|Proto	| WLAN Protocol version.|
-|FCfield	| Specifies wireless frame flag i.e. to-DS, from-DS, retry, power, protected, etc.| 
-|ID	| Connection ID assigned between source and destination over a period within maximum datagram lifetime (MDL).|
-|Addr1 |	Wireless device MAC address (destination/recipient).|
-|Addr2 |	Wireless device MAC address (relay/source).|
-|Addr3 |	Wireless device MAC address (BSSID/source/destination).|
-|SC |	Wireless packets Sequence control.|
-|Addr4 |	Wireless device Mac Address (BSSID/source).|
-|Dot11Elt.ID	| Dot11 beacon type specific e.g. 0 for management i.e. SSID.|  
-|Dot11Elt.len |	Length of specific Dot11Elt packet sequence payload.|
-|Dot11Elt.info	| Information of the Dot11Elt packet sequence.|
+# Specify the directory path where the PCAP files are located
+pcap_directory = '/path/to/pcap/files'
 
- ################### TCP IOT #########################
+# Iterate through each file in the directory
+for filename in os.listdir(pcap_directory):
+    if filename.endswith('.pcap'):
+        # Construct the full file path
+        file_path = os.path.join(pcap_directory, filename)
+        
+        # Call the iot() function with the file path
+        iot(file_path)
+```
 
-Library Module name : iot()
+#### Filtering TCP PCAP Files
+CyberSecTK allows you to filter specific TCP PCAP files using a Python dictionary named `ip_filter`. This dictionary should be defined in your script before calling the `iot` function.
 
-Example:
+The library uses `tshark` to extract the features from the given TCP pcap file. Make sure `tshark` is installed on your system.
+
+The `ip_filter` dictionary uses keys to specify the type of device and values to specify the IP addresses to filter. The filtered pcap file will be saved with its filtered name inside the `filtered_pcap` directory.
+
+Here are the available keys for the `ip_filter` dictionary:
+
+- `TCP_Mobile`
+- `TCP_Outlet`
+- `TCP_Assistant`
+- `TCP_Camera`
+- `TCP_Miscellaneous`
+
+Here's an example of how to define the `ip_filter` dictionary:
+
+```python
+ip_filter = {}
+ip_filter['TCP_Miscellaneous'] = "'tcp && (ip.src==192.168.1.216) || (ip.src==192.168.1.46) || (ip.src==192.168.1.84) || (ip.src==192.168.1.91)'"
+```
+
+In this example, the `TCP_Miscellaneous` key is associated with a string that specifies a TCP filter for several IP addresses. You can replace these IP addresses with the ones you want to filter.
+
+To use the `ip_filter` dictionary, pass it as an argument to the `iot` function:
+
+```python
+from cybersectk.iot import iot
+iot(**ip_filter)
+```
+
+
+### MALEWARE
+The `malware` module extracts features from system log files to identify malicious activity.
+
+```python
+from cybersectk.malware import malware
+malware()
+```
  
- from cybersectk.iot import iot
- 
- iot()
- 
-OUTPUT File: label_feature_IOT.CSV
+The module outputs a CSV file named `DynamicMalwareMatrix.csv`.
 
-NOTE: We need to create two different directories original_pcap and filtered_pcap in a working directory. The source iot pcap file need to be available inside the original_pcap directory. 
-The library uses tshark to extract the features from the given TCP pcap file. Make sure tshark is installed on your system. 
-A python dictionary ip_filter {} is used to filter device specific TCP PCAP files at the time of execution. The filtered pcap file will be save with its fileted name inside filtered_pcap directory.
+Note: Before running the feature extraction, please ensure that you have created a directory named `log_files` in the same working directory. Inside the `log_files` directory, add the non-malicious system log files with names like `Good1.CSV`, `Good2.CSV`, and so on. For infected log files, please refer to the sample dataset provided for better understanding.
 
-Available Dictionary ip_filter keys
-TCP_Mobile
+You can download the sample dataset from the following link:
 
-TCP_Outlet
+[Sample Dataset](https://drive.google.com/drive/folders/1_mJUvA99cHsE09UxFb1Cpyik3fVaSy0N?usp=sharing)
 
-TCP_Assistant
 
-TCP_Camera
+## Feature Desrciptions
+Each module extracts a different set of features. For detailed descriptions of the features extracted by each module, see the [Feature Descriptions](Feature_Descriptions.md) document.
 
-TCP_Miscellaneous
-
-Dictionary key value pair example:
-
-ip_filter['TCP_Miscellaneous'] = "'tcp && (ip.src==192.168.1.216) || (ip.src==192.168.1.46) || (ip.src==192.168.1.84) \
-                     || (ip.src==192.168.1.91)'"
-
-Please update dictionary key and value. 
-
-Example: ip_filter {} 
-
-ip_filter['TCP_Miscellaneous'] = "'tcp && (ip.src==IP_Address)'"
-         
-iot (**ip_filter)
-
-**IOT Features**
-> Feature selection is based on TCP/IP packet.
-
-| Features | Description |
-|--- | --- |
-|Label | Specifies the device type eg. Mobile, Camera, outlet, etc.|
-|IPLength |	Total length of the IP packets.|
-|IPHeaderLength |	Packets IP header length. |
-|TTL |	Time to live filed, helps to maintain packets from looping endlessly.|
-|Protocol |	Packet protocol field indicates packets upper-layer protocols.| 
-|DestPort |	Destination Port fields helps to identify the end points of the connection.|
-|SequenceNumber |	Initialize the sequence number assigned to PDU at the time of data transmission. |
-|AckNumber |	Acknowledge the value specific to the sequence of data expecting to receive in the next sequence number.| 
-|WindowSize	| Specified the packet buffer space available for incoming data.|
-|TCPHeaderLength |	TCP packet header length.|
-|TCPLength |	Total TCP packet length.|
-|TCPStream |	Specifies the segments of the TCP PDU (Protocol Data Units).|
-|TCPUrgentPointer | Data bytes set as urgent flag in the TCP header for immediate process.|
-|IPFlags |	3 bits field value set to control or identify the fragments of the IP packets eg. Reserved (R) , Don’t fragment (DF) and More fragments (MF).|
-|IPID |	Unique identification field value assigned for every PDU, between a source and destination of a given protocol over a period within maximum datagram lifetime (MDL).|
-|IPchecksum |	Detect corruption in IPv4 packets header.|
-|TCPflags |	Specifies the particular state of TCP connection, fields use like SYN, ACK, FIN, RST, etc. |
-|TCPChecksum	| Detect corruption in TCP packed payload and the header.|
-
-####################### MALEWARE ###########################
-
-Library function name : malware()
-
-Example:
- 
- from cybersectk.malware import malware
- 
- malware()
- 
- OUTPUT File : DynamicMalwareMatrix.CSV
-
-Note: Please make sure to creat directory "log_files" in a same working directory and add the Good and infected CSV log files inside log_files directory for feature extraction. Make sure to name Good1.CSV, Good2.CSV and so on for the non malicious system log files. Please refer to the sample data set for better understanding. 
-
-Plese download the sample dataset from the Link below. 
-
-https://drive.google.com/drive/folders/1_mJUvA99cHsE09UxFb1Cpyik3fVaSy0N?usp=sharing
-
-**Dynamic Malware Matrix Features** 
-> TOP 20 Selected features out of 1000.
-
-|Features |	Description |
-|---|---|
-|events_31bf3856ad364e35_6	| Windows system update service packages corrupt.|
-|onent |	OneNote email association to send contents to notebooks by emailing.|
-|directx	| DirectX error leading to tech support scams paying for unnecessary technical support service.| 
-|resources_31bf3856ad364e35_8	| Error code 37 leading to tech support scams paying for unnecessary technical supports service.| 
-|oem	| Original Equipment Manufacturer version use to build windows system.|
-|adm_31bf3856ad364e35_6 |	Operating System misconfigured, missing or damaged important system files leading system crash with errors.| 
-|resources_b03f5f7f11d50a3a_en |	.NET framework vulnerability could allow security feature bypass.|
-|client_31bf3856ad364e35_6 |	Service stop error trying to connect to a printer server in windows (error 0x00000006).|
-|rds |	Relational Database Service error.| 
-|pcat |	Windows update patch error leading system crash, boot loader manager error.| 
-|core_31bf3856ad364e35_6 |	Windows remote desktop service access error.|
-|identity|	Services directory application or web service user authentication error due to account group policy.|  
-|inf_31bf3856ad364e35_6 |	Windows OS network adaptor stop/disable error eg. Stop: 0x0000000A (parameter1, parameter2, parameter3, parameter4) IRQL_NOT_LESS_OR_EQUAL|
-|resources_31bf3856ad364e35_6 |	Windows DNS service updates configuration rules.|
-|anguagepack_31bf3856ad364e35_6|	Windows system32 components service configuration error.|
-|resources_b03f5f7f11d50a3a_6 |	Windows security update for .NET framework.|
-|mdac	|Microsoft Data Access Components core data access components eg. Microsoft SQL server.|
-|dll_31bf3856ad364e35_6 |	Microsoft windows operating system, crypto API32.DLL file.|
-|driverclass_31bf3856ad364e35_6 |	Windows security update installation problem.|
-|msil_system	| Security update for .NET framework service.|
+## Contributing
+We welcome contributions to CyberSecTK! Please see out Contributing Guide for more information.

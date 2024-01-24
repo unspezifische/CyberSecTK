@@ -1,4 +1,6 @@
-# BEGIN: /Users/ianjohnson/CyberSecTK/.gitignore
+# BEGIN: .gitignore
 env/
+dist/
 *.egg-info/
-# END: /Users/ianjohnson/CyberSecTK/.gitignore
+**/.DS_Store
+# END: .gitignore

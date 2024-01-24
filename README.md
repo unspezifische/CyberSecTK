@@ -112,7 +112,8 @@ Note: Before running the feature extraction, please ensure that you have created
 
 You can download the sample dataset from the following link:
 
-[Sample Dataset](https://drive.google.com/drive/folders/1_mJUvA99cHsE09UxFb1Cpyik3fVaSy0N?usp=sharing)
+[Sample Dataset](https://drive.google.com/drive/folders/1_mJUvA99cHsE09UxFb1Cpyik3fVaSy0N?usp=sharing) (not an affiliated Drive account)
+The sample data can also be found on the [GitHub page](https://github.com/unspezifische/CyberSecTK), under the `pcap_files` directory. The "Sample Dataset" does contain a directory with system logs for use with the Malware function, which are not currently included in the GitHub Repo.
 
 
 ## Feature Desrciptions

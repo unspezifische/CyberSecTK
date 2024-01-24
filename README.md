@@ -119,4 +119,4 @@ You can download the sample dataset from the following link:
 Each module extracts a different set of features. For detailed descriptions of the features extracted by each module, see the [Feature Descriptions](Feature_Descriptions.md) document.
 
 ## Contributing
-We welcome contributions to CyberSecTK! Please see out Contributing Guide for more information.
+We welcome contributions to CyberSecTK! Please see out [Contributing Guide](Contributing_Guide.md) for more information.

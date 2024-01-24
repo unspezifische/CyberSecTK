@@ -56,6 +56,7 @@ def iot(pcap_file, **ip_filter):
 
 
 if __name__ == "__main__":
-    features = iot(**ip_filter)
+    pcap_file = input("Enter the Pcap file:")
+    features = iot(pcap_file, **ip_filter)
     for feature_dict in features:
         print(feature_dict)

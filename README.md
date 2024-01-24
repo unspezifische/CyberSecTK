@@ -33,7 +33,7 @@ The `wiot` module extracts features from wireless DataLink layer header informat
  wiot()
 ```
 
-This module outputs a CSV file named `IOTwireless.csv`. 
+This module outputs a NumPy array, which can be passed directly to a TensorFlow or PyTorch training script. 
  
 NOTE: Ensure the file is in the same directory as the script, and don't forget specify the `.pcap` extension at the end of the file name.
 
@@ -45,7 +45,7 @@ from cybersectk.iot import iot
 iot('path_to_your_pcap_file.pcap', **ip_filter)
  ```
  
-This module outputs a DataFrame with the extracted features, and saves a copy of each PCAP file with the filter applied into a directory called `filtered_pcap`.
+This module outputs a NumPy array, which can be passed directly to a TensorFlow or PyTorch training script. 
 
 #### Iterating Through a Directory of PCAPs
 We can use Python's built-in `os` library to iterate through a directory containing PCAP files and pass each file to the `iot()` function, using the `ip_filter` dictionary provided by CyberSecTK:
@@ -106,7 +106,7 @@ from cybersectk.malware import malware
 malware()
 ```
  
-The module outputs a CSV file named `DynamicMalwareMatrix.csv`.
+This module outputs a NumPy array, which can be passed directly to a TensorFlow or PyTorch training script. 
 
 Note: Before running the feature extraction, please ensure that you have created a directory named `log_files` in the same working directory. Inside the `log_files` directory, add the non-malicious system log files with names like `Good1.CSV`, `Good2.CSV`, and so on. For infected log files, please refer to the sample dataset provided for better understanding.
 
